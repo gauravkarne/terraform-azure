@@ -1,6 +1,6 @@
 @Library('github.com/releaseworks/jenkinslib') _
 node{
-    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'azure-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
         stage 'Checkout Terraform Project'
             git branch: 'main', url: 'https://gitlab.com/n.neeharikareddy/terraformrepo.git'
         stage 'INIT'
@@ -8,12 +8,12 @@ node{
         stage 'SANITY CHECK'
             bat 'terraform validate'
         stage 'PLAN'
-            bat 'terraform plan -out "s3.tfplan"'
+            bat 'terraform plan -out "strg3.tfplan"'
         stage 'FORMAT'
             bat 'terraform fmt'
         stage 'APPLY'
-            bat 'terraform apply "s3.tfplan"'
-        stage("List S3 buckets") 
+            bat 'terraform apply "strg3.tfplan"'
+        stage("List azure storage account") 
             bat 'terraform state list'
   }    
 }
