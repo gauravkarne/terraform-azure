@@ -3,6 +3,10 @@ node{
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'azure-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
         stage 'Checkout Terraform Project'
             git branch: 'main', url: 'https://github.com/gauravkarne/terraform-azure.git'
+        stage 'Set up azure Env'
+            bat 'az login -u "terraformDec12@ACP3837A.onmicrosoft.com" -p "Acc1234$$"'
+        stage 'Set azure account'
+            bat 'az account set --subscription=b473335b-e612-444d-a496-6ce2680a7f69'
         stage 'INIT'
             bat 'terraform init'
         stage 'SANITY CHECK'
